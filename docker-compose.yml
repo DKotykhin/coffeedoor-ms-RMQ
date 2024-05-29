@@ -1,0 +1,8 @@
+services:
+  rabbitmq-cd:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env.stage.docker
