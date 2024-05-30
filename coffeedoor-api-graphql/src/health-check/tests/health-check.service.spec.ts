@@ -6,7 +6,15 @@ describe('HealthCheckService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HealthCheckService],
+      providers: [
+        HealthCheckService,
+        {
+          provide: 'MENU_RMQ_MS',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     service = module.get<HealthCheckService>(HealthCheckService);

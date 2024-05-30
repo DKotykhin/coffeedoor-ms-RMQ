@@ -8,6 +8,11 @@ registerEnumType(HealthCheckEnum, {
   name: 'HealthCheckEnum',
 });
 
-export interface HealthCheckResponse {
+export interface HealthCheckStatus {
   status: HealthCheckEnum;
+}
+
+export interface HealthCheckResponse {
+  menuRmqService: HealthCheckStatus;
+  userRmqService: HealthCheckStatus;
 }

@@ -1,32 +1,43 @@
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 
-import { HealthCheckResponse } from './health-check.interface';
+import {
+  HealthCheckEnum,
+  HealthCheckResponse,
+  HealthCheckStatus,
+} from './health-check.interface';
 
 @Injectable()
 export class HealthCheckService {
-  constructor(@Inject('MENU_RMQ_MS') private readonly client: ClientProxy) {}
+  constructor(
+    @Inject('MENU_RMQ_MS') private readonly menuRMQClient: ClientProxy,
+    @Inject('USER_RMQ_MS') private readonly userRMQClient: ClientProxy,
+  ) {}
   protected readonly logger = new Logger(HealthCheckService.name);
 
   async checkHealth(): Promise<HealthCheckResponse> {
-    try {
-      const response = await firstValueFrom(
-        this.client.send<HealthCheckResponse, string>('menu-health-check', ''),
-      );
-      return response;
-    } catch (error) {
-      this.logger.error(`${error.code} - ${error.message}`);
-      throw new HttpException(
-        error.message,
-        error.code || HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const checkServiceHealth = async (client: ClientProxy, service: string) => {
+      try {
+        return await firstValueFrom(
+          client
+            .send<HealthCheckStatus, any>(`${service}-health-check`, {})
+            .pipe(timeout(5000)),
+        );
+      } catch (error) {
+        this.logger.error(`Error code ${error.code || 500} - ${error.message}`);
+        return { status: HealthCheckEnum.NOT_SERVING };
+      }
+    };
+
+    const [menuRmqService, userRmqService] = await Promise.all([
+      checkServiceHealth(this.menuRMQClient, 'menu'),
+      checkServiceHealth(this.userRMQClient, 'user'),
+    ]);
+
+    return {
+      menuRmqService,
+      userRmqService,
+    };
   }
 }

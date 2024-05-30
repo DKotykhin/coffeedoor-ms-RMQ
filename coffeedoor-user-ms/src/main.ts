@@ -11,7 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const RMQ_URL = configService.get<string>('RMQ_URL');
-  const QUEUE_NAME = configService.get<string>('MENU_QUEUE_NAME');
+  const QUEUE_NAME = configService.get<string>('USER_QUEUE_NAME');
 
   app.connectMicroservice({
     transport: Transport.RMQ,
@@ -24,6 +24,6 @@ async function bootstrap() {
     },
   });
   await app.startAllMicroservices();
-  logger.log(`Menu RMQ Microservice is running on ${RMQ_URL}`);
+  logger.log(`User RMQ Microservice is running on ${RMQ_URL}`);
 }
 bootstrap();
