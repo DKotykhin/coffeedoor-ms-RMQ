@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transport } from '@nestjs/microservices';
 
@@ -9,6 +9,7 @@ const logger = new Logger('main.ts');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
   const RMQ_URL = configService.get<string>('RMQ_URL');
   const QUEUE_NAME = configService.get<string>('USER_QUEUE_NAME');

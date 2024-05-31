@@ -1,16 +1,16 @@
 services:
-  api-graphql-app:
-    container_name: api-graphql-app
-    build:
-      context: .
-      target: prod
-      dockerfile: ./coffeedoor-api-graphql/Dockerfile
-    env_file:
-      - ./coffeedoor-api-graphql/.env.stage.docker
-    ports:
-      - "4444:4444"
-    depends_on:
-      - rabbitmq
+  # api-graphql-app:
+  #   container_name: api-graphql-app
+  #   build:
+  #     context: .
+  #     target: prod
+  #     dockerfile: ./coffeedoor-api-graphql/Dockerfile
+  #   env_file:
+  #     - ./coffeedoor-api-graphql/.env.stage.docker
+  #   ports:
+  #     - "4444:4444"
+  #   depends_on:
+  #     - rabbitmq
 
   menu-rmq-ms:
     container_name: menu-rmq-ms
@@ -33,6 +33,21 @@ services:
       - ./coffeedoor-user-ms/.env.stage.docker
     depends_on:
       - rabbitmq
+      - postgres-user-rmq
+  postgres-user-rmq:
+    container_name: postgres-user-rmq
+    image: postgres:latest
+    ports:
+      - "9903:5432"
+    env_file:
+      - ./coffeedoor-user-ms/.env.stage.docker
+    volumes:
+      - pg_user:/var/lib/postgresql/data
+  adminer-user-rmq:
+    container_name: adminer-user-rmq
+    image: adminer
+    ports:
+      - 8803:8080
 
   rabbitmq:
     container_name: rabbitmq-broker
@@ -42,3 +57,6 @@ services:
       - "15672:15672"
     env_file:
       - .env.stage.docker
+
+volumes:
+  pg_user:

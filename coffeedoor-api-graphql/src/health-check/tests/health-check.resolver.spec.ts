@@ -16,6 +16,12 @@ describe('HealthCheckResolver', () => {
             send: jest.fn(),
           },
         },
+        {
+          provide: 'USER_RMQ_MS',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
