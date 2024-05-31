@@ -22,7 +22,7 @@ export class HealthCheckService {
         return await firstValueFrom(
           client
             .send<HealthCheckStatus, any>(`${service}-health-check`, {})
-            .pipe(timeout(5000)),
+            .pipe(timeout(3000)),
         );
       } catch (error) {
         this.logger.error(`Error code ${error.code || 500} - ${error.message}`);

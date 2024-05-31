@@ -1,5 +1,6 @@
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { RpcException } from '@nestjs/microservices';
 import * as sgMail from '@sendgrid/mail';
 
 import { MailData } from './dto/mail-data.dto';
@@ -25,8 +26,13 @@ export class MailSenderService {
       this.logger.log(`Email sent to ${to}`);
       return { status: true, message: `Email to ${to} successfully sent` };
     } catch (error) {
-      this.logger.error(error.message);
-      throw new HttpException(error.message, error.code || 500);
+      this.logger.error(
+        `Error: code ${error.error?.status || 500} - ${error.message}`,
+      );
+      throw new RpcException({
+        status: error.error?.status || 500,
+        message: error.message,
+      });
     }
   }
 }

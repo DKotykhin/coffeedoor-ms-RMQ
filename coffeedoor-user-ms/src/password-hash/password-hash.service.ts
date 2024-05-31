@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -9,10 +10,10 @@ export class PasswordHashService {
     const salt = await bcrypt.genSalt(this.index);
     const passwordHash = await bcrypt.hash(password, salt);
     if (!passwordHash) {
-      throw new HttpException(
-        "Can't create password hash",
-        HttpStatus.FORBIDDEN,
-      );
+      throw new RpcException({
+        message: "Can't create password hash",
+        status: HttpStatus.FORBIDDEN,
+      });
     }
     return passwordHash;
   }
@@ -20,7 +21,10 @@ export class PasswordHashService {
   async compare(password: string, passwordHash: string): Promise<boolean> {
     const isValidPass = await bcrypt.compare(password, passwordHash);
     if (!isValidPass) {
-      throw new HttpException('Password not match', HttpStatus.BAD_REQUEST);
+      throw new RpcException({
+        message: 'Password not match',
+        status: HttpStatus.BAD_REQUEST,
+      });
     }
     return isValidPass;
   }
@@ -28,7 +32,10 @@ export class PasswordHashService {
   async same(password: string, passwordHash: string): Promise<boolean> {
     const isValidPass = await bcrypt.compare(password, passwordHash);
     if (isValidPass) {
-      throw new HttpException('The same password!', HttpStatus.BAD_REQUEST);
+      throw new RpcException({
+        message: 'The same password!',
+        status: HttpStatus.BAD_REQUEST,
+      });
     }
     return isValidPass;
   }

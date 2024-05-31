@@ -9,5 +9,6 @@ import { UserResolver } from './user.resolver';
 @Module({
   imports: [ClientsModule.registerAsync([userRmqConfig])],
   providers: [UserResolver, UserService],
+  exports: [UserService],
 })
 export class UserModule {}
