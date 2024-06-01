@@ -18,6 +18,20 @@ import { AuthModule } from './auth/auth.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      formatError: (error: any) => {
+        const originalError = error.extensions?.originalError;
+        if (!originalError) {
+          return {
+            message: error?.message,
+            code: error.extensions?.code,
+          };
+        }
+        return {
+          message: originalError.message,
+          error: originalError.error,
+          code: originalError.statusCode,
+        };
+      },
     }),
     HealthCheckModule,
     UserModule,

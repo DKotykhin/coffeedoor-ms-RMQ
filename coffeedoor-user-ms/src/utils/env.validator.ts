@@ -10,6 +10,30 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   USER_QUEUE_NAME: string;
+
+  @IsNotEmpty()
+  PG_HOST: string;
+
+  @IsNotEmpty()
+  PG_DATABASE: string;
+
+  @IsNotEmpty()
+  PG_USER: string;
+
+  @IsNotEmpty()
+  PG_PASSWORD: string;
+
+  @IsNotEmpty()
+  PG_PORT: string;
+
+  @IsNotEmpty()
+  FRONTEND_URL: string;
+
+  @IsNotEmpty()
+  SG_API_KEY: string;
+
+  @IsNotEmpty()
+  SG_EMAIL_ADDRESS: string;
 }
 
 export function validate(config: Record<string, unknown>) {

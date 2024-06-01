@@ -25,10 +25,9 @@ export class AuthService {
         this.userRMQClient.send<User, SignUpDto>('sign-up', signUpDto),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: signUp',
+      });
     }
   }
 
@@ -42,10 +41,9 @@ export class AuthService {
       this.logger.debug(`auth_token: ${auth_token}`);
       return { user, token: auth_token };
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: signIn',
+      });
     }
   }
 
@@ -58,10 +56,9 @@ export class AuthService {
         ),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: confirmEmail',
+      });
     }
   }
 
@@ -74,10 +71,9 @@ export class AuthService {
         ),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: resendEmail',
+      });
     }
   }
 
@@ -90,10 +86,9 @@ export class AuthService {
         ),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: resetPassword',
+      });
     }
   }
 
@@ -108,10 +103,9 @@ export class AuthService {
         ),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: setNewPassword',
+      });
     }
   }
 }

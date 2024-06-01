@@ -16,6 +16,9 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   USER_QUEUE_NAME: string;
+
+  @IsNotEmpty()
+  JWT_SECRET_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {

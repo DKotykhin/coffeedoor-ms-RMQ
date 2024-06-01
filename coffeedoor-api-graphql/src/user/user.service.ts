@@ -21,10 +21,9 @@ export class UserService {
         this.userRMQClient.send<User, EmailDto>('get-user-by-email', { email }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: getUserByEmail',
+      });
     }
   }
 
@@ -34,10 +33,9 @@ export class UserService {
         this.userRMQClient.send<User, IdDto>('get-user-by-id', { id }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: getUserById',
+      });
     }
   }
 
@@ -50,10 +48,9 @@ export class UserService {
         }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: updateUser',
+      });
     }
   }
 
@@ -63,10 +60,9 @@ export class UserService {
         this.userRMQClient.send<StatusResponse, IdDto>('delete-user', { id }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: deleteUser',
+      });
     }
   }
 
@@ -79,10 +75,9 @@ export class UserService {
         >('confirm-password', { id, password }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: confirmPassword',
+      });
     }
   }
 
@@ -95,10 +90,9 @@ export class UserService {
         >('change-password', { id, password }),
       );
     } catch (error) {
-      this.logger.error(
-        `Error: code ${error.status || 500} - ${error.message}`,
-      );
-      throw new HttpException(error.message, error.status || 500);
+      throw new HttpException(error.message, error.status || 500, {
+        cause: 'UserService: changePassword',
+      });
     }
   }
 }
