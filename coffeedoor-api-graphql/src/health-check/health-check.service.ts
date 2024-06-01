@@ -25,7 +25,9 @@ export class HealthCheckService {
             .pipe(timeout(3000)),
         );
       } catch (error) {
-        this.logger.error(`Error code ${error.code || 500} - ${error.message}`);
+        this.logger.error(
+          `Health check catch code ${error.code || 500} - ${error.message}`,
+        );
         return { status: HealthCheckEnum.NOT_SERVING };
       }
     };

@@ -19,6 +19,9 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   JWT_SECRET_KEY: string;
+
+  @IsNotEmpty()
+  JWT_EXPIRES_IN: string;
 }
 
 export function validate(config: Record<string, unknown>) {

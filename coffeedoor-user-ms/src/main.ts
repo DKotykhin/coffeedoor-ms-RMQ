@@ -1,30 +1,32 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app.module';
 
 const logger = new Logger('main.ts');
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
-  const configService = app.get(ConfigService);
+  const appContext = await NestFactory.createApplicationContext(AppModule);
+  const configService = appContext.get(ConfigService);
   const RMQ_URL = configService.get<string>('RMQ_URL');
   const QUEUE_NAME = configService.get<string>('USER_QUEUE_NAME');
 
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: [RMQ_URL],
-      queue: QUEUE_NAME,
-      queueOptions: {
-        durable: false,
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.RMQ,
+      options: {
+        urls: [RMQ_URL],
+        queue: QUEUE_NAME,
+        queueOptions: {
+          durable: false,
+        },
       },
     },
-  });
-  await app.startAllMicroservices();
+  );
+  await app.listen();
   logger.log(`User RMQ Microservice is running on ${RMQ_URL}`);
 }
 bootstrap();

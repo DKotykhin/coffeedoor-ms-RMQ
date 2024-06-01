@@ -11,6 +11,7 @@ import {
   NotImplementedException,
   ServiceUnavailableException,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
 
@@ -40,6 +41,9 @@ export class HttpExceptionFilter implements GqlExceptionFilter {
         break;
       case 406:
         httpException = new NotAcceptableException(exception.response);
+        break;
+      case 422:
+        httpException = new UnprocessableEntityException(exception.response);
         break;
       case 500:
         httpException = new InternalServerErrorException(exception.response);
