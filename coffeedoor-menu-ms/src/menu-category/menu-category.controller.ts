@@ -27,7 +27,7 @@ export class MenuCategoryController {
     return this.menuCategoryService.findByLanguage(language);
   }
 
-  @MessagePattern('get-all-menu-categories')
+  @MessagePattern('get-menu-categories')
   getAllMenuCategories(): Promise<MenuCategory[]> {
     this.logger.log('Received getAllMenuCategories request');
     return this.menuCategoryService.findAll();

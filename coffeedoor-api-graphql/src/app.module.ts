@@ -2,11 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { CacheModule } from '@nestjs/cache-manager';
 
-import { HealthCheckModule } from './health-check/health-check.module';
 import { validate } from './utils/env.validator';
-import { UserModule } from './user/user.module';
+import { HealthCheckModule } from './health-check/health-check.module';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { MenuCategoryModule } from './menu-category/menu-category.module';
+import { MenuItemModule } from './menu-item/menu-item.module';
 
 @Module({
   imports: [
@@ -33,9 +36,15 @@ import { AuthModule } from './auth/auth.module';
         };
       },
     }),
-    HealthCheckModule,
-    UserModule,
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 10 * 1000,
+    }),
     AuthModule,
+    HealthCheckModule,
+    MenuCategoryModule,
+    MenuItemModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
