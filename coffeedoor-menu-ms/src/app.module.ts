@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { HealthCheckModule } from './health-check/health-check.module';
 import { validate } from './utils/env.validator';
+import { DatabaseModule } from './database/database.module';
+import { HealthCheckModule } from './health-check/health-check.module';
+import { MenuCategoryModule } from './menu-category/menu-category.module';
+import { MenuItemModule } from './menu-item/menu-item.module';
 
 @Module({
   imports: [
@@ -11,7 +14,10 @@ import { validate } from './utils/env.validator';
       envFilePath: ['.env.stage.dev'],
       validate,
     }),
+    DatabaseModule,
     HealthCheckModule,
+    MenuCategoryModule,
+    MenuItemModule,
   ],
   controllers: [],
   providers: [],

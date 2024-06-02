@@ -10,6 +10,21 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   MENU_QUEUE_NAME: string;
+
+  @IsNotEmpty()
+  PG_HOST: string;
+
+  @IsNotEmpty()
+  PG_DATABASE: string;
+
+  @IsNotEmpty()
+  PG_USER: string;
+
+  @IsNotEmpty()
+  PG_PASSWORD: string;
+
+  @IsNotEmpty()
+  PG_PORT: string;
 }
 
 export function validate(config: Record<string, unknown>) {
