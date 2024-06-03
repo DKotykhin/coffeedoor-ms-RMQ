@@ -14,6 +14,10 @@ describe('MenuItemResolver', () => {
           provide: 'MENU_ITEM_SERVICE',
           useValue: {},
         },
+        {
+          provide: 'MENU_RMQ_MS',
+          useValue: {},
+        },
       ],
     }).compile();
 

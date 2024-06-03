@@ -2,20 +2,13 @@ import {
   IsDefined,
   IsNotEmptyObject,
   IsPositive,
-  IsUUID,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Field, InputType, Int } from '@nestjs/graphql';
 
-import { LanguageCode } from '../../common/types/enums';
+import { IdDto, LanguageCode } from '../../common/_index';
 
-@InputType()
-class MenuCategoryId {
-  @Field()
-  @IsUUID()
-  id: string;
-}
 @InputType()
 export class CreateMenuItemDto {
   @Field(() => LanguageCode)
@@ -37,10 +30,10 @@ export class CreateMenuItemDto {
   @IsPositive()
   position: number;
 
-  @Field(() => MenuCategoryId)
+  @Field(() => IdDto)
   @IsDefined()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => MenuCategoryId)
-  menuCategory: MenuCategoryId;
+  @Type(() => IdDto)
+  menuCategory: IdDto;
 }

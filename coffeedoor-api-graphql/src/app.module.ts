@@ -21,6 +21,7 @@ import { MenuItemModule } from './menu-item/menu-item.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      context: ({ req, res }) => ({ req, res }),
       formatError: (error: any) => {
         const originalError = error.extensions?.originalError;
         if (!originalError) {
