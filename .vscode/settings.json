@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "kubernetes://schema/v1%40service": "file:///Users/dmytrokotykhin/Documents/GitHub/coffeedoor-ms-RMQ/k8s/k8s-menu-ps.yaml"
+  }
+}

@@ -1,0 +1,103 @@
+# Description: This file contains the k8s configuration for the postgres database for the menu service.
+# The configuration includes a ConfigMap, a PersistentVolumeClaim, a PersistentVolume, a Deployment, and a Service.
+
+# ConfigMap:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-menu
+  labels:
+    app: postgres-menu
+data:
+  POSTGRES_DB: menu_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+
+---
+# PersistentVolumeClaim:
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-volume-claim
+  labels:
+    app: postgres-menu
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
+
+---
+# PersistentVolume:
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-volume-menu
+  labels:
+    type: local
+    app: postgres-menu
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/postgresql
+
+---
+# Deployment:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-menu
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgres-menu
+  template:
+    metadata:
+      labels:
+        app: postgres-menu
+    spec:
+      containers:
+        - name: postgres-menu
+          image: "postgres:latest"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-config-menu
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data-menu
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+      volumes:
+        - name: postgres-data-menu
+          persistentVolumeClaim:
+            claimName: postgres-volume-claim
+
+---
+# Service:
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-menu
+  labels:
+    app: postgres-menu
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-menu

@@ -1,5 +1,5 @@
 #standalone container
-FROM node:20 as dev
+FROM node:20
 
 WORKDIR /app
 

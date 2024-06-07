@@ -1,16 +1,16 @@
 services:
-  # api-graphql-app:
-  #   container_name: api-graphql-app
-  #   build:
-  #     context: .
-  #     target: prod
-  #     dockerfile: ./coffeedoor-api-graphql/Dockerfile
-  #   env_file:
-  #     - ./coffeedoor-api-graphql/.env.stage.docker
-  #   ports:
-  #     - "4444:4444"
-  #   depends_on:
-  #     - rabbitmq
+  api-graphql-app:
+    container_name: api-graphql-app
+    build:
+      context: .
+      target: prod
+      dockerfile: ./coffeedoor-api-graphql/Dockerfile
+    env_file:
+      - ./coffeedoor-api-graphql/.env.stage.docker
+    ports:
+      - "4444:4444"
+    depends_on:
+      - rabbitmq
 
   menu-rmq-ms:
     container_name: menu-rmq-ms

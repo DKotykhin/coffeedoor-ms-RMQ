@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: menu-app
+spec:
+  selector:
+    matchLabels:
+      app: menu-app
+  template:
+    metadata:
+      labels:
+        app: menu-app
+    spec:
+      containers:
+      - name: menu-app
+        image: <Image>
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
