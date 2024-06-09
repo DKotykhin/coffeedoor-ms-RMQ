@@ -1,5 +1,5 @@
 #standalone container
-FROM node:20
+FROM node:alpine
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ CMD [ "pnpm", "start" ]
 
 
 # common container
-FROM node:20 as prod
+FROM node:alpine as prod
 
 WORKDIR /coffeedoor-user-ms
 
